@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+  title: FoodExercise Log API
+  version: "1.0.0"
+paths:
+  /api/exercise/logs:
+    get:
+      summary: Get exercise logs by date
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogListResponse'
+  /api/food/logs:
+    get:
+      summary: Get food logs by date
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogListResponse'
+components:
+  schemas:
+    LogItem:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        details:
+          type: object
+    LogListResponse:
+      type: object
+      properties:
+        logs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LogItem'
