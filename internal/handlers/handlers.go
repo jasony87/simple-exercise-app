@@ -32,6 +32,24 @@ func (h *Handler) GetApiExerciseLogs(ctx echo.Context, params mealxapi.GetApiExe
 	})
 }
 
+func (h *Handler) PutApiExerciseLogs(ctx echo.Context, params mealxapi.PutApiExerciseLogsParams) error {
+	logs := []mealxapi.LogItem{
+		{
+			Id:        ptr("abc"),
+			Type:      ptr("exercise"),
+			Timestamp: ptrTime(time.Now()),
+			Details: &map[string]interface{}{
+				"exercise": "Running",
+				"duration": 50,
+			},
+		},
+	}
+
+	return ctx.JSON(http.StatusOK, mealxapi.LogListResponse{
+		Logs: &logs,
+	})
+}
+
 func (h *Handler) GetApiFoodLogs(ctx echo.Context, params mealxapi.GetApiFoodLogsParams) error {
 	logs := []mealxapi.LogItem{
 		{

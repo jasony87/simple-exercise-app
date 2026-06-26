@@ -2,7 +2,7 @@ package openapi3
 
 import (
 	"encoding/json"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/go-openapi/jsonpointer"
@@ -71,8 +71,7 @@ func (responses Responses) JSONLookup(token string) (any, error) {
 	} else if ref := v.Ref; ref != "" {
 		return &Ref{Ref: ref}, nil
 	} else {
-		var vv *Response = v.Value
-		return vv, nil
+		return v.Value, nil
 	}
 }
 
@@ -111,7 +110,7 @@ func (responses *Responses) UnmarshalJSON(data []byte) (err error) {
 	for k := range m {
 		ks = append(ks, k)
 	}
-	sort.Strings(ks)
+	slices.Sort(ks)
 
 	x := Responses{
 		Extensions: make(map[string]any),
@@ -122,17 +121,6 @@ func (responses *Responses) UnmarshalJSON(data []byte) (err error) {
 		v := m[k]
 		if strings.HasPrefix(k, "x-") {
 			x.Extensions[k] = v
-			continue
-		}
-
-		if k == originKey {
-			var data []byte
-			if data, err = json.Marshal(v); err != nil {
-				return
-			}
-			if err = json.Unmarshal(data, &x.Origin); err != nil {
-				return
-			}
 			continue
 		}
 
@@ -213,8 +201,7 @@ func (callback Callback) JSONLookup(token string) (any, error) {
 	} else if ref := v.Ref; ref != "" {
 		return &Ref{Ref: ref}, nil
 	} else {
-		var vv *PathItem = v
-		return vv, nil
+		return v, nil
 	}
 }
 
@@ -253,7 +240,7 @@ func (callback *Callback) UnmarshalJSON(data []byte) (err error) {
 	for k := range m {
 		ks = append(ks, k)
 	}
-	sort.Strings(ks)
+	slices.Sort(ks)
 
 	x := Callback{
 		Extensions: make(map[string]any),
@@ -264,17 +251,6 @@ func (callback *Callback) UnmarshalJSON(data []byte) (err error) {
 		v := m[k]
 		if strings.HasPrefix(k, "x-") {
 			x.Extensions[k] = v
-			continue
-		}
-
-		if k == originKey {
-			var data []byte
-			if data, err = json.Marshal(v); err != nil {
-				return
-			}
-			if err = json.Unmarshal(data, &x.Origin); err != nil {
-				return
-			}
 			continue
 		}
 
@@ -355,8 +331,7 @@ func (paths Paths) JSONLookup(token string) (any, error) {
 	} else if ref := v.Ref; ref != "" {
 		return &Ref{Ref: ref}, nil
 	} else {
-		var vv *PathItem = v
-		return vv, nil
+		return v, nil
 	}
 }
 
@@ -395,7 +370,7 @@ func (paths *Paths) UnmarshalJSON(data []byte) (err error) {
 	for k := range m {
 		ks = append(ks, k)
 	}
-	sort.Strings(ks)
+	slices.Sort(ks)
 
 	x := Paths{
 		Extensions: make(map[string]any),
@@ -406,17 +381,6 @@ func (paths *Paths) UnmarshalJSON(data []byte) (err error) {
 		v := m[k]
 		if strings.HasPrefix(k, "x-") {
 			x.Extensions[k] = v
-			continue
-		}
-
-		if k == originKey {
-			var data []byte
-			if data, err = json.Marshal(v); err != nil {
-				return
-			}
-			if err = json.Unmarshal(data, &x.Origin); err != nil {
-				return
-			}
 			continue
 		}
 

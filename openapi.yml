@@ -1,3 +1,4 @@
+---
 openapi: 3.0.3
 info:
   title: FoodExercise Log API
@@ -20,6 +21,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LogListResponse'
+    put:
+      summary: Update exercise log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogItem'
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogListResponse'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /api/food/logs:
     get:
       summary: Get food logs by date
@@ -58,3 +98,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LogItem'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+        code:
+          type: integer
+        details:
+          type: object
