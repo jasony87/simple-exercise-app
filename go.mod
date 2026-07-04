@@ -1,4 +1,4 @@
-module main
+module github.com/jasony87/simple-exercise-app
 
 go 1.25.2
 
