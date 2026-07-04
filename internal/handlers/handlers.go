@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	mealxapi "main/generated"
 	"net/http"
 	"time"
+
+	mealxapi "github.com/jasony87/simple-exercise-app/generated"
 
 	"github.com/labstack/echo/v4"
 )
@@ -19,7 +20,7 @@ func (h *Handler) GetApiExerciseLogs(ctx echo.Context, params mealxapi.GetApiExe
 		{
 			Id:        ptr("ex123"),
 			Type:      ptr("exercise"),
-			Timestamp: ptrTime(time.Now()),
+			Timestamp: ptr(time.Now()),
 			Details: &map[string]interface{}{
 				"exercise": "Running",
 				"duration": 30,
@@ -37,7 +38,7 @@ func (h *Handler) PutApiExerciseLogs(ctx echo.Context, params mealxapi.PutApiExe
 		{
 			Id:        ptr("abc"),
 			Type:      ptr("exercise"),
-			Timestamp: ptrTime(time.Now()),
+			Timestamp: ptr(time.Now()),
 			Details: &map[string]interface{}{
 				"exercise": "Running",
 				"duration": 50,
@@ -55,7 +56,7 @@ func (h *Handler) GetApiFoodLogs(ctx echo.Context, params mealxapi.GetApiFoodLog
 		{
 			Id:        ptr("fd123"),
 			Type:      ptr("food"),
-			Timestamp: ptrTime(time.Now()),
+			Timestamp: ptr(time.Now()),
 			Details: &map[string]interface{}{
 				"meal":     "Lunch",
 				"calories": 600,
@@ -69,36 +70,7 @@ func (h *Handler) GetApiFoodLogs(ctx echo.Context, params mealxapi.GetApiFoodLog
 }
 
 // Helper functions for pointer values
-func ptr(s string) *string {
-	return &s
+
+func ptr[T any](v T) *T {
+	return &v
 }
-
-func ptrTime(t time.Time) *time.Time {
-	return &t
-}
-
-// package handlers
-
-// import (
-// 	"context"
-// 	mealxapi "main/generated"
-// )
-
-// type Handler struct {
-// 	// you can add dependencies here, e.g. DB connection
-// }
-
-// func NewHandler() *Handler {
-// 	return &Handler{}
-// }
-
-// func (h *Handler) GetApiExerciseLogs(ctx context.Context, params mealxapi.GetApiExerciseLogsParams) error {
-// 	// GET api exercise logs
-// 	return nil
-// }
-
-// // Get food logs by date
-// // (GET /api/food/logs)
-// func GetApiFoodLogs(ctx context.Context, params mealxapi.GetApiFoodLogsParams) error {
-// 	return nil
-// }
