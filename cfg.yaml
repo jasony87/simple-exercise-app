@@ -1,5 +1,5 @@
-package: mealxapi
-output: generated/mealx_gen.go
+package: xapi
+output: generated/exercise_gen.go
 generate:
   echo-server: true
   models: true
