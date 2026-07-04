@@ -1,6 +1,9 @@
 # Makefile for simple-exercise-app
-.PHONY: generate api run build clean
-all: generate api run
+.PHONY: generate run build clean
+all: generate run
+
+@PHONY: all
+all: generate run
 
 @PHONY: generate
 generate:
