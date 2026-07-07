@@ -38,15 +38,23 @@ type GetApiExerciseLogsParams struct {
 	Date openapi_types.Date `form:"date" json:"date"`
 }
 
+// PostApiExerciseLogsParams defines parameters for PostApiExerciseLogs.
+type PostApiExerciseLogsParams struct {
+	Date openapi_types.Date `form:"date" json:"date"`
+}
+
 // PutApiExerciseLogsParams defines parameters for PutApiExerciseLogs.
 type PutApiExerciseLogsParams struct {
-	Date string `form:"date" json:"date"`
+	Date openapi_types.Date `form:"date" json:"date"`
 }
 
 // GetApiFoodLogsParams defines parameters for GetApiFoodLogs.
 type GetApiFoodLogsParams struct {
 	Date openapi_types.Date `form:"date" json:"date"`
 }
+
+// PostApiExerciseLogsJSONRequestBody defines body for PostApiExerciseLogs for application/json ContentType.
+type PostApiExerciseLogsJSONRequestBody = LogItem
 
 // PutApiExerciseLogsJSONRequestBody defines body for PutApiExerciseLogs for application/json ContentType.
 type PutApiExerciseLogsJSONRequestBody = LogItem
@@ -56,6 +64,9 @@ type ServerInterface interface {
 	// Get exercise logs by date
 	// (GET /api/exercise/logs)
 	GetApiExerciseLogs(ctx echo.Context, params GetApiExerciseLogsParams) error
+	// Create exercise log
+	// (POST /api/exercise/logs)
+	PostApiExerciseLogs(ctx echo.Context, params PostApiExerciseLogsParams) error
 	// Update exercise log
 	// (PUT /api/exercise/logs)
 	PutApiExerciseLogs(ctx echo.Context, params PutApiExerciseLogsParams) error
@@ -87,6 +98,24 @@ func (w *ServerInterfaceWrapper) GetApiExerciseLogs(ctx echo.Context) error {
 	return err
 }
 
+// PostApiExerciseLogs converts echo context to params.
+func (w *ServerInterfaceWrapper) PostApiExerciseLogs(ctx echo.Context) error {
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params PostApiExerciseLogsParams
+	// ------------- Required query parameter "date" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "date", ctx.QueryParams(), &params.Date, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter date: %s", err))
+	}
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.PostApiExerciseLogs(ctx, params)
+	return err
+}
+
 // PutApiExerciseLogs converts echo context to params.
 func (w *ServerInterfaceWrapper) PutApiExerciseLogs(ctx echo.Context) error {
 	var err error
@@ -95,7 +124,7 @@ func (w *ServerInterfaceWrapper) PutApiExerciseLogs(ctx echo.Context) error {
 	var params PutApiExerciseLogsParams
 	// ------------- Required query parameter "date" -------------
 
-	err = runtime.BindQueryParameterWithOptions("form", true, true, "date", ctx.QueryParams(), &params.Date, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "date", ctx.QueryParams(), &params.Date, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter date: %s", err))
 	}
@@ -171,6 +200,7 @@ func RegisterHandlersWithOptions(router EchoRouter, si ServerInterface, options 
 	}
 
 	router.GET(options.BaseURL+"/api/exercise/logs", wrapper.GetApiExerciseLogs, options.OperationMiddlewares["GetApiExerciseLogs"]...)
+	router.POST(options.BaseURL+"/api/exercise/logs", wrapper.PostApiExerciseLogs, options.OperationMiddlewares["PostApiExerciseLogs"]...)
 	router.PUT(options.BaseURL+"/api/exercise/logs", wrapper.PutApiExerciseLogs, options.OperationMiddlewares["PutApiExerciseLogs"]...)
 	router.GET(options.BaseURL+"/api/food/logs", wrapper.GetApiFoodLogs, options.OperationMiddlewares["GetApiFoodLogs"]...)
 
