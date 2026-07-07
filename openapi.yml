@@ -33,6 +33,7 @@ paths:
           name: date
           schema:
             type: string
+            format: date
           required: true
       responses:
         "200":
@@ -40,7 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LogListResponse'
+                $ref: '#/components/schemas/LogItem'
         "400":
           description: Bad Request
           content:
@@ -59,7 +60,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+    post:
+      summary: Create exercise log
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogItem'
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogItem'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/food/logs:
     get:
       summary: Get food logs by date
