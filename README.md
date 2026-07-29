@@ -1,7 +1,7 @@
 # What does this app do?
 
 Log meals and exercises\
-View them by date
+View them by date\
 Can create, update, delete
 
 TODO: meals will be implemented after exercises.
