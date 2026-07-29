@@ -41,3 +41,5 @@ POST   /api/exercise     -> Log an exercise\
 GET    /api/logs?date=2025-10-07\
 PUT    /api/food/:id     -> Update food\
 DELETE /api/exercise/:id
+
+TODO: update README with latest updates
