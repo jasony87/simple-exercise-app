@@ -3,6 +3,8 @@
 Log meals and exercises\
 View them by date
 
+TODO: meals will be implemented after exercises.
+
 # Tech Stack
 
 Backend: Go (Golang)\
